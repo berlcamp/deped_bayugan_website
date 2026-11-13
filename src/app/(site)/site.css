@@ -791,8 +791,8 @@ p {
   position: relative;
   padding: 22px;
   border-radius: var(--radius-lg);
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  background: linear-gradient(150deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.06));
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: linear-gradient(150deg, rgba(15, 58, 125, 0.92), rgba(6, 26, 58, 0.95));
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
   box-shadow: var(--shadow-lg);
@@ -839,8 +839,8 @@ p {
   margin-top: 10px;
   padding: 12px 14px;
   border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(6, 26, 58, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.06);
   transition: transform 0.2s var(--ease), background-color 0.2s, border-color 0.2s;
 }
 .portal-link:hover {
@@ -871,7 +871,7 @@ p {
 .portal-link small {
   display: block;
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 255, 255, 0.78);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
