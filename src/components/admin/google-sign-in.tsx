@@ -23,10 +23,14 @@ export function GoogleSignIn({ next }: { next: string }) {
   const signIn = async () => {
     setLoading(true);
     setError(null);
+    // The page to return to travels in a short-lived cookie, so redirectTo is the bare
+    // callback URL and matches the Supabase "Redirect URLs" entry exactly. (A query string
+    // makes it not match, and Supabase then falls back to the project's Site URL.)
+    document.cookie = `auth_next=${encodeURIComponent(next)}; Path=/auth/callback; Max-Age=600; SameSite=Lax${location.protocol === "https:" ? "; Secure" : ""}`;
     const { error } = await createClient().auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(next)}`,
+        redirectTo: `${window.location.origin}/auth/callback`,
         queryParams: { prompt: "select_account" },
       },
     });

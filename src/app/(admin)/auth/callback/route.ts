@@ -7,9 +7,19 @@ import type { Staff } from "@/lib/types";
 export async function GET(request: NextRequest) {
   const { searchParams, origin } = request.nextUrl;
   const code = searchParams.get("code");
-  const nextParam = searchParams.get("next");
-  const next = nextParam?.startsWith("/admin") ? nextParam : "/admin";
-  const fail = (error: string) => NextResponse.redirect(`${origin}/login?error=${error}`);
+  // Set by the sign-in button. Only same-site admin paths are allowed (no open redirects).
+  const raw = request.cookies.get("auth_next")?.value ?? searchParams.get("next");
+  let nextParam = raw;
+  try {
+    nextParam = raw ? decodeURIComponent(raw) : null;
+  } catch {}
+  const next = nextParam && /^\/admin(\/|\?|$)/.test(nextParam) ? nextParam : "/admin";
+  const done = (url: string) => {
+    const res = NextResponse.redirect(url);
+    res.cookies.set("auth_next", "", { path: "/auth/callback", maxAge: 0 });
+    return res;
+  };
+  const fail = (error: string) => done(`${origin}/login?error=${error}`);
 
   if (!code) return fail("auth_failed");
 
@@ -26,5 +36,5 @@ export async function GET(request: NextRequest) {
     return fail(staff?.status === "disabled" ? "disabled" : "not_invited");
   }
 
-  return NextResponse.redirect(`${origin}${next}`);
+  return done(`${origin}${next}`);
 }
