@@ -1,0 +1,172 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-inter-tight), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-brand: var(--brand);
+  --color-brand-tint: var(--brand-tint);
+  --color-success: var(--success);
+  --color-success-tint: var(--success-tint);
+  --color-warning: var(--warning);
+  --color-warning-tint: var(--warning-tint);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/* DepEd Bayugan admin — DepEd navy/blue on cool neutrals, gold accent */
+:root {
+  --background: #F5F7FB;
+  --foreground: #0F1B33;
+  --card: #FFFFFF;
+  --card-foreground: #0F1B33;
+  --popover: #FFFFFF;
+  --popover-foreground: #0F1B33;
+  --primary: #0A2A5E;
+  --primary-foreground: #FFFFFF;
+  --secondary: #EEF2F8;
+  --secondary-foreground: #0F1B33;
+  --muted: #EEF2F8;
+  --muted-foreground: #586579;
+  --accent: #E3EDFB;
+  --accent-foreground: #0F3A7D;
+  --destructive: #DC2626;
+  --border: #DDE3EE;
+  --input: #C7D0DE;
+  --ring: #1D64C9;
+  --brand: #1450A8;
+  --brand-tint: #E3EDFB;
+  --success: #047857;
+  --success-tint: #E7F6EF;
+  --warning: #B45309;
+  --warning-tint: #FEF3C7;
+  --chart-1: #1450A8;
+  --chart-2: #0F766E;
+  --chart-3: #6366F1;
+  --chart-4: #B45309;
+  --chart-5: #64748B;
+  --radius: 0.75rem;
+  --sidebar: #FFFFFF;
+  --sidebar-foreground: #3F4451;
+  --sidebar-primary: #0A2A5E;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #E3EDFB;
+  --sidebar-accent-foreground: #0F3A7D;
+  --sidebar-border: #DDE3EE;
+  --sidebar-ring: #1D64C9;
+}
+
+.dark {
+  --background: #07111F;
+  --foreground: #F2F2F0;
+  --card: #0D1A2E;
+  --card-foreground: #F2F2F0;
+  --popover: #12223B;
+  --popover-foreground: #F2F2F0;
+  --primary: #F2B705;
+  --primary-foreground: #061A3A;
+  --secondary: #12223B;
+  --secondary-foreground: #F2F2F0;
+  --muted: #12223B;
+  --muted-foreground: #A1A5B0;
+  --accent: #15284A;
+  --accent-foreground: #B9D3FF;
+  --destructive: #F87171;
+  --border: #1E2F4B;
+  --input: #2B4066;
+  --ring: #F2B705;
+  --brand: #8DB8FF;
+  --brand-tint: #15284A;
+  --success: #34D399;
+  --success-tint: #0F2A21;
+  --warning: #FBBF24;
+  --warning-tint: #2B2108;
+  --sidebar: #0A1628;
+  --sidebar-foreground: #C3CEE0;
+  --sidebar-primary: #F2B705;
+  --sidebar-primary-foreground: #061A3A;
+  --sidebar-accent: #15284A;
+  --sidebar-accent-foreground: #B9D3FF;
+  --sidebar-border: #1E2F4B;
+  --sidebar-ring: #F2B705;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+  html {
+    @apply font-sans;
+  }
+  h1, h2, h3 {
+    @apply font-heading tracking-tight;
+  }
+}
+
+/* Rich-text editor content (Tiptap) — mirrors the public article typography */
+.editor-content .ProseMirror {
+  min-height: 420px;
+  outline: none;
+  font-size: 18px;
+  line-height: 1.75;
+  color: var(--foreground);
+}
+.editor-content .ProseMirror > * + * { margin-top: 1em; }
+.editor-content .ProseMirror h2 { font: 700 26px/1.25 var(--font-heading); letter-spacing: -0.02em; margin-top: 1.6em; }
+.editor-content .ProseMirror h3 { font: 700 21px/1.3 var(--font-heading); letter-spacing: -0.02em; margin-top: 1.4em; }
+.editor-content .ProseMirror ul { list-style: disc; padding-left: 1.4em; }
+.editor-content .ProseMirror ol { list-style: decimal; padding-left: 1.4em; }
+.editor-content .ProseMirror blockquote { border-left: 4px solid var(--brand); padding-left: 20px; font: 600 22px/1.4 var(--font-heading); }
+.editor-content .ProseMirror a { color: var(--brand); text-decoration: underline; text-underline-offset: 3px; }
+.editor-content .ProseMirror img { border-radius: 12px; max-width: 100%; height: auto; }
+.editor-content .ProseMirror img.ProseMirror-selectednode { outline: 3px solid var(--ring); }
+.editor-content .ProseMirror hr { border-color: var(--border); margin: 2em 0; }
+.editor-content .ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  color: var(--muted-foreground);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
