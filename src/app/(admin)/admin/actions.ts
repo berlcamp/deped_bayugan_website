@@ -358,6 +358,8 @@ const pageInput = z.object({
   excerpt: z.string().trim().max(400).nullable().optional(),
   content: z.string().max(400_000),
   cover_image_url: httpUrl("The banner image must be a web link.").nullable().optional().or(z.literal("")),
+  pdf_url: httpUrl("The PDF must be a web link.").nullable().optional().or(z.literal("")),
+  pdf_name: z.string().trim().max(200).nullable().optional(),
   seo_title: z.string().trim().max(120).nullable().optional(),
   seo_description: z.string().trim().max(300).nullable().optional(),
   status: z.enum(["draft", "published"]),
@@ -384,6 +386,8 @@ export async function savePage(raw: PageInput): Promise<ActionResult<{ id: strin
     content: sanitizeArticleHtml(p.content),
     excerpt: p.excerpt || null,
     cover_image_url: p.cover_image_url || null,
+    pdf_url: p.pdf_url || null,
+    pdf_name: (p.pdf_url && p.pdf_name) || null,
     seo_title: p.seo_title || null,
     seo_description: p.seo_description || null,
   };

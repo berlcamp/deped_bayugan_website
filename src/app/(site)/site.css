@@ -1874,6 +1874,33 @@ p {
   }
 }
 
+.pdf-viewer {
+  margin-top: 32px;
+}
+.pdf-viewer .attachment {
+  margin-top: 0;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.pdf-frame {
+  display: block;
+  width: 100%;
+  height: min(85vh, 1100px);
+  border: 1px solid var(--line-strong);
+  border-top: 0;
+  border-radius: 0 0 var(--radius) var(--radius);
+  background: var(--surface-2);
+}
+/* Most phone browsers can't render PDFs inline, so use the Open / Download buttons there. */
+@media (max-width: 640px) {
+  .pdf-viewer .attachment {
+    border-radius: var(--radius);
+  }
+  .pdf-frame {
+    display: none;
+  }
+}
+
 .side {
   display: grid;
   gap: 20px;

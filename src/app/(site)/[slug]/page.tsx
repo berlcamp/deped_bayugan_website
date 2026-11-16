@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ChevronRight, Headset } from "lucide-react";
+import { ChevronRight, Download, ExternalLink, FileText, Headset } from "lucide-react";
 import { DocRow, GridSkeleton, StoryCard } from "@/components/site/cards";
 import { PageHero } from "@/components/site/page-hero";
 import { getCategory, getCategoryPage, getMenu, getPage } from "@/lib/data/public";
@@ -145,6 +145,7 @@ async function PageView({ page }: { page: Page }) {
   const menu = await getMenu();
   const group = siblingsOf(menu, page.slug);
   const html = sanitizeArticleHtml(page.content);
+  const hasText = /<(img|iframe|table)\b/i.test(html) || html.replace(/<[^>]*>|&nbsp;/g, "").trim().length > 0;
 
   return (
     <>
@@ -156,7 +157,8 @@ async function PageView({ page }: { page: Page }) {
       />
       <div className="container content-wrap">
         <article className="article-card">
-          <div className="prose" dangerouslySetInnerHTML={{ __html: html }} />
+          {hasText && <div className="prose" dangerouslySetInnerHTML={{ __html: html }} />}
+          {page.pdf_url && <PdfViewer url={page.pdf_url} name={page.pdf_name || page.title} first={!hasText} />}
         </article>
         <aside className="side" aria-label="More in this section">
           {group && (
@@ -194,5 +196,28 @@ async function PageView({ page }: { page: Page }) {
         </aside>
       </div>
     </>
+  );
+}
+
+function PdfViewer({ url, name, first }: { url: string; name: string; first: boolean }) {
+  return (
+    <section className="pdf-viewer" style={first ? { marginTop: 0 } : undefined} aria-label={`${name} (PDF)`}>
+      <div className="attachment">
+        <span className="a-icon">
+          <FileText className="i" aria-hidden="true" />
+        </span>
+        <span className="txt">
+          <b>{name}</b>
+          <small>PDF document</small>
+        </span>
+        <a className="btn btn-outline" href={url} target="_blank" rel="noopener noreferrer">
+          <ExternalLink className="i" aria-hidden="true" /> Open
+        </a>
+        <a className="btn btn-primary" href={url} download>
+          <Download className="i" aria-hidden="true" /> Download
+        </a>
+      </div>
+      <iframe className="pdf-frame" src={`${url}#view=FitH`} title={name} loading="lazy" />
+    </section>
   );
 }

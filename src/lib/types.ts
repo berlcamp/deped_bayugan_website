@@ -77,6 +77,8 @@ export type Page = {
   excerpt: string | null;
   content: string;
   cover_image_url: string | null;
+  pdf_url: string | null;
+  pdf_name: string | null;
   status: PageStatus;
   seo_title: string | null;
   seo_description: string | null;

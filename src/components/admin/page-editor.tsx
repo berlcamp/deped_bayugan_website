@@ -7,7 +7,7 @@ import { ArrowLeft, Check, ExternalLink, Loader2, Send, Trash2, Undo2 } from "lu
 import { toast } from "sonner";
 import { deletePage, savePage } from "@/app/(admin)/admin/actions";
 import { ConfirmDialog } from "@/components/admin/confirm-dialog";
-import { ImageField } from "@/components/admin/editor/fields";
+import { ImageField, PdfField } from "@/components/admin/editor/fields";
 import { RichTextEditor } from "@/components/admin/editor/rich-text-editor";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -23,6 +23,8 @@ type Form = {
   excerpt: string;
   content: string;
   cover_image_url: string;
+  pdf_url: string;
+  pdf_name: string;
   seo_title: string;
   seo_description: string;
 };
@@ -33,6 +35,8 @@ const toForm = (p: Page | null): Form => ({
   excerpt: p?.excerpt ?? "",
   content: p?.content ?? "",
   cover_image_url: p?.cover_image_url ?? "",
+  pdf_url: p?.pdf_url ?? "",
+  pdf_name: p?.pdf_name ?? "",
   seo_title: p?.seo_title ?? "",
   seo_description: p?.seo_description ?? "",
 });
@@ -167,7 +171,7 @@ export function PageEditor({ page }: { page: Page | null }) {
           <span id="page-body-label" className="sr-only">
             Page content
           </span>
-          <RichTextEditor value={form.content} onChange={(v) => set("content", v)} labelledBy="page-body-label" placeholder="Write the page… Use the toolbar for headings, lists, links and images." />
+          <RichTextEditor value={form.content} onChange={(v) => set("content", v)} labelledBy="page-body-label" placeholder="Write the page… or leave empty and upload a PDF in the sidebar." />
         </div>
 
         <aside className="space-y-4">
@@ -193,6 +197,10 @@ export function PageEditor({ page }: { page: Page | null }) {
 
           <SideCard title="Banner image" description="Optional. Shown faintly behind the page title.">
             <ImageField id="page-banner" folder="pages" value={form.cover_image_url} onChange={(v) => set("cover_image_url", v)} emptyLabel="Upload a banner" />
+          </SideCard>
+
+          <SideCard title="PDF document" description="Optional. Shown in a viewer below the page content, with a download button.">
+            <PdfField url={form.pdf_url} name={form.pdf_name} onChange={(patch) => setForm((f) => ({ ...f, ...patch }))} />
           </SideCard>
 
           <SideCard title="Search & social">

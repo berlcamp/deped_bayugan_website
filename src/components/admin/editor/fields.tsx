@@ -172,3 +172,89 @@ export function AttachmentField({
     </div>
   );
 }
+
+/** A single PDF shown in an embedded viewer on the public page. */
+export function PdfField({
+  url,
+  name,
+  disabled,
+  onChange,
+}: {
+  url: string;
+  name: string;
+  disabled?: boolean;
+  onChange: (patch: { pdf_url?: string; pdf_name?: string }) => void;
+}) {
+  const input = useRef<HTMLInputElement>(null);
+  const [busy, setBusy] = useState(false);
+
+  const handle = async (file?: File) => {
+    if (!file) return;
+    if (file.type !== "application/pdf") return void toast.error("Please choose a PDF file.");
+    setBusy(true);
+    try {
+      const uploaded = await uploadDocument(file);
+      onChange({ pdf_url: uploaded, pdf_name: name || file.name.replace(/\.pdf$/i, "") });
+      toast.success("PDF uploaded");
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Upload failed");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  return (
+    <div className="space-y-3">
+      {url ? (
+        <div className="flex items-center gap-3 rounded-xl border bg-background p-3">
+          <span className="grid size-10 shrink-0 place-items-center rounded-lg bg-destructive/10 text-destructive">
+            <FileText className="size-5" aria-hidden="true" />
+          </span>
+          <a href={url} target="_blank" rel="noopener noreferrer" className="min-w-0 flex-1 truncate text-sm font-medium hover:underline">
+            {name || "PDF document"}
+          </a>
+          {!disabled && (
+            <>
+              <Button type="button" size="icon-sm" variant="ghost" aria-label="Replace PDF" onClick={() => input.current?.click()} disabled={busy}>
+                {busy ? <Loader2 className="animate-spin" /> : <RefreshCw />}
+              </Button>
+              <Button type="button" size="icon-sm" variant="ghost" aria-label="Remove PDF" onClick={() => onChange({ pdf_url: "", pdf_name: "" })}>
+                <Trash2 />
+              </Button>
+            </>
+          )}
+        </div>
+      ) : (
+        <Button type="button" variant="outline" className="h-11 w-full gap-2 rounded-xl" disabled={disabled || busy} onClick={() => input.current?.click()}>
+          {busy ? <Loader2 className="animate-spin" /> : <FileUp className="size-4" />}
+          {busy ? "Uploading…" : "Upload PDF"}
+        </Button>
+      )}
+      {url && (
+        <div className="space-y-1.5">
+          <Label htmlFor="pdf-name">Document title</Label>
+          <Input
+            id="pdf-name"
+            value={name}
+            disabled={disabled}
+            maxLength={200}
+            onChange={(e) => onChange({ pdf_name: e.target.value })}
+            placeholder="e.g. Citizen's Charter 2026"
+          />
+        </div>
+      )}
+      <input
+        ref={input}
+        type="file"
+        accept=".pdf,application/pdf"
+        className="sr-only"
+        tabIndex={-1}
+        aria-hidden="true"
+        onChange={(e) => {
+          handle(e.target.files?.[0]);
+          e.target.value = "";
+        }}
+      />
+    </div>
+  );
+}
